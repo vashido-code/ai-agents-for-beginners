@@ -30,11 +30,31 @@ Every shot is drafted on LTX first, at low resolution and capped at 3 seconds. Y
 - ComfyUI's `/free` endpoint is called **between models**.
 - Jobs run **one at a time**.
 
-## Setup
+## Setup checklist
 
-1. Install Foundry Local. This notebook uses the **2.x Python SDK** (`pip install "foundry-local-sdk>=2"`), whose API differs from the `FoundryLocalManager(alias)` calls in Lesson 17.
-2. Start ComfyUI (default `http://127.0.0.1:8188`). Not needed while `DRY_RUN = True`.
-3. Open the notebook and run it top to bottom. It is in **dry run** mode by default and writes the patched workflow JSON for every job under `shot_to_pixel_demo/dry_run/`.
+Run these on the machine that has the GPU and ComfyUI.
+
+1. **Prerequisites:** Python 3.12+, git, and an NVIDIA driver (`nvidia-smi` should list your GPU).
+2. **Install:**
+   ```bash
+   git clone https://github.com/vashido-code/ai-agents-for-beginners.git
+   cd ai-agents-for-beginners
+   python -m venv venv
+   venv\Scripts\activate          # Linux/macOS: source venv/bin/activate
+   pip install "foundry-local-sdk>=2" httpx jupyter
+   ```
+   The 2.x SDK bundles the Foundry Local runtime, so a separate Foundry Local install should not be needed. This notebook uses the 2.x API, which differs from the older `FoundryLocalManager(alias)` calls in Lesson 17.
+3. **Check the local LLM.** List the catalog and pick a chat model alias; if `qwen2.5-7b` is missing, change `LLM_ALIAS` in the notebook:
+   ```python
+   from foundry_local_sdk import Configuration, FoundryLocalManager
+   FoundryLocalManager.initialize(Configuration(app_name="check"))
+   print(sorted({m.alias for m in FoundryLocalManager.instance.catalog.list_models()}))
+   ```
+   The first run downloads the model.
+4. **Check ComfyUI.** It should answer at `http://127.0.0.1:8188` (`curl http://127.0.0.1:8188/system_stats`). First confirm that each of your LTX, Wan and MiniMax graphs generates a video in ComfyUI on its own. Change `COMFY_URL` in the notebook if your port differs.
+5. **Export and bind your workflows** (next section).
+6. **Dry run:** run the notebook top to bottom with `DRY_RUN = True`. Open a file in `shot_to_pixel_demo/dry_run/final/` and confirm the prompt, size, frame count and seed landed in the right nodes. LTX frame counts should be `8n+1` and Wan `4n+1`.
+7. **First live run:** set `DRY_RUN = False`, shrink the script to one short shot, and test one model at a time (LTX draft first). Watch `nvidia-smi`: video generation should use the VRAM, not the LLM.
 
 ## Connecting your own ComfyUI workflows
 
