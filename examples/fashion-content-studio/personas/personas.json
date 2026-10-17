@@ -1,0 +1,6 @@
+[
+  {"id": "f_studio_slim", "file": "f_studio_slim.jpg", "gender": "female", "fits": ["top", "bottom", "dress", "outerwear"], "note": "студия, светлый фон, размер 42-44"},
+  {"id": "f_studio_plus", "file": "f_studio_plus.jpg", "gender": "female", "fits": ["top", "bottom", "dress", "outerwear"], "note": "студия, светлый фон, размер 50-52"},
+  {"id": "f_street", "file": "f_street.jpg", "gender": "female", "fits": ["top", "dress", "outerwear"], "note": "улица, дневной свет"},
+  {"id": "m_studio", "file": "m_studio.jpg", "gender": "male", "fits": ["top", "bottom", "outerwear"], "note": "студия, светлый фон"}
+]

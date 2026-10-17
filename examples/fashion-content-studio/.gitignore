@@ -1,0 +1,5 @@
+jobs/
+personas/*.jpg
+personas/*.jpeg
+personas/*.png
+__pycache__/
